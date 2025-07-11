@@ -39,7 +39,7 @@ short-url/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/short-url.git
+git clone https://github.com/ch-abhiram/ShortURL.git
 cd short-url
 npm install
 ```
