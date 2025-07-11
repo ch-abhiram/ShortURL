@@ -28,8 +28,10 @@ Welcome to the **Short URL Generator** — a full-stack web application built us
 short-url/
 │
 ├── controllers/        # Request logic
+├── middlewares/        # middlewares
 ├── models/             # Mongoose schemas
 ├── routes/             # Express route handlers
+├── views/              # EJS pages
 ├── connect.js          # MongoDB connection
 ├── index.js            # Main server entry
 ├── .gitignore          # Prevents tracking node_modules, env files
