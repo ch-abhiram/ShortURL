@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SignUp - URL Shortener</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: float 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
+
+    .signup-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 50px 40px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 450px;
+      animation: slideUp 0.8s ease-out;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .signup-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+      border-radius: 24px 24px 0 0;
+      animation: gradient-shift 3s ease-in-out infinite;
+    }
+
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .signup-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .signup-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2rem;
+      color: white;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .input-container {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+      font-size: 1rem;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .input-with-icon {
+      padding-left: 45px !important; /* Prevent overlap */
+    }
+
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 16px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      outline: none;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+      background: white;
+    }
+
+    input::placeholder {
+      color: #adb5bd;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #6c757d;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      padding: 4px;
+      z-index: 2;
+    }
+
+    .password-toggle:hover {
+      color: #667eea;
+    }
+
+    .signup-button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .signup-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .signup-button:hover::before {
+      left: 100%;
+    }
+
+    .signup-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .signup-button:active {
+      transform: translateY(-1px);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+      color: #6c757d;
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: #764ba2;
+    }
+
+    .terms-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #6c757d;
+      line-height: 1.5;
+    }
+
+    .terms-text a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .terms-text a:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .button-loading .loading {
+      display: inline-block;
+    }
+
+    .button-loading .button-text {
+      opacity: 0.7;
+    }
+
+    .password-strength {
+      margin-top: 8px;
+      height: 4px;
+      background: #e9ecef;
+      border-radius: 2px;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .password-strength.show {
+      opacity: 1;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .strength-weak { background: #dc3545; width: 25%; }
+    .strength-fair { background: #fd7e14; width: 50%; }
+    .strength-good { background: #ffc107; width: 75%; }
+    .strength-strong { background: #28a745; width: 100%; }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="signup-header">
+      <div class="signup-icon">👤</div>
+      <h1>SignUp</h1>
+      <p class="subtitle">Create your account to get started with URL shortening.</p>
+    </div>
+    <form action="/user" method="post" id="signupForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-container">
+          <span class="input-icon">👤</span>
+          <input type="text" id="name" name="name" required placeholder="Enter your full name" class="input-with-icon" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-container">
+          <span class="input-icon">📧</span>
+          <input type="email" id="email" name="email" required placeholder="Enter your email address" class="input-with-icon" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-container">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" name="password" required placeholder="Enter your password" class="input-with-icon" />
+          <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+        </div>
+        <div class="password-strength" id="passwordStrength">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+      </div>
+      <button type="submit" class="signup-button" id="signupButton">
+        <span class="loading"></span>
+        <span class="button-text">Create Account</span>
+      </button>
+    </form>
+    <div class="terms-text">
+      By signing up, you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.
+    </div>
+    <div class="login-link">
+      Already have an account? <a href="/login">Sign in here</a>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.querySelector('.password-toggle');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = '🙈';
+      } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = '👁️';
+      }
+    }
+
+    function checkPasswordStrength(password) {
+      let strength = 0;
+      const checks = [
+        password.length >= 8,
+        /[a-z]/.test(password),
+        /[A-Z]/.test(password),
+        /[0-9]/.test(password),
+        /[^A-Za-z0-9]/.test(password)
+      ];
+      strength = checks.filter(Boolean).length;
+      return strength;
+    }
+
+    document.getElementById('password').addEventListener('input', function () {
+      const password = this.value;
+      const strengthIndicator = document.getElementById('passwordStrength');
+      const strengthBar = document.getElementById('strengthBar');
+
+      if (password.length > 0) {
+        strengthIndicator.classList.add('show');
+        const strength = checkPasswordStrength(password);
+        strengthBar.className = 'strength-bar';
+        if (strength <= 2) {
+          strengthBar.classList.add('strength-weak');
+        } else if (strength === 3) {
+          strengthBar.classList.add('strength-fair');
+        } else if (strength === 4) {
+          strengthBar.classList.add('strength-good');
+        } else {
+          strengthBar.classList.add('strength-strong');
+        }
+      } else {
+        strengthIndicator.classList.remove('show');
+      }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function () {
+      const button = document.getElementById('signupButton');
+      button.classList.add('button-loading');
+      button.disabled = true;
+    });
+  </script>
+</body>
+</html>
