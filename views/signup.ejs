@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SignUp - URL Shortener</title>
   <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --text-light: #f0f0f0;
+      --text-dark: #2c3e50;
+      --background-light: rgba(255, 255, 255, 0.95);
+      --background-dark: #1e1e1e;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -13,7 +22,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -21,6 +30,12 @@
       padding: 20px;
       position: relative;
       overflow: hidden;
+      transition: background 0.3s ease;
+    }
+
+    body.dark {
+      background: #121212;
+      color: var(--text-light);
     }
 
     body::before {
@@ -36,13 +51,69 @@
       z-index: -1;
     }
 
+    body.dark::before {
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    }
+
     @keyframes float {
       0% { transform: translateY(0px) rotate(0deg); }
       100% { transform: translateY(-100px) rotate(360deg); }
     }
 
+    /* Theme Toggle Switch */
+    .theme-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+      z-index: 1000;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      background-color: #ccc;
+      border-radius: 34px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: 0.4s;
+    }
+
+    .slider::before {
+      content: "☀️";
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .theme-switch input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    .theme-switch input:checked + .slider::before {
+      transform: translateX(24px);
+      content: "🌙";
+    }
+
     .signup-container {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--background-light);
       backdrop-filter: blur(20px);
       border-radius: 24px;
       padding: 50px 40px;
@@ -52,6 +123,13 @@
       animation: slideUp 0.8s ease-out;
       position: relative;
       border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-dark);
+    }
+
+    body.dark .signup-container {
+      background: var(--background-dark);
+      border: 1px solid #333;
+      color: var(--text-light);
     }
 
     @keyframes slideUp {
@@ -101,7 +179,6 @@
     }
 
     h1 {
-      color: #2c3e50;
       font-size: 2.5rem;
       font-weight: 700;
       background: linear-gradient(45deg, #667eea, #764ba2);
@@ -117,6 +194,10 @@
       font-weight: 400;
     }
 
+    body.dark .subtitle {
+      color: #adb5bd;
+    }
+
     .form-group {
       margin-bottom: 25px;
       position: relative;
@@ -125,7 +206,6 @@
     label {
       display: block;
       margin-bottom: 8px;
-      color: #2c3e50;
       font-weight: 600;
       font-size: 1rem;
       transition: color 0.3s ease;
@@ -146,8 +226,12 @@
       z-index: 1;
     }
 
+    body.dark .input-icon {
+      color: #adb5bd;
+    }
+
     .input-with-icon {
-      padding-left: 45px !important; /* Prevent overlap */
+      padding-left: 45px !important;
     }
 
     input[type="text"], input[type="email"], input[type="password"] {
@@ -162,15 +246,33 @@
       transition: all 0.3s ease;
     }
 
+    body.dark input[type="text"],
+    body.dark input[type="email"],
+    body.dark input[type="password"] {
+      background: #333;
+      color: #f0f0f0;
+      border: 2px solid #555;
+    }
+
     input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
       border-color: #667eea;
       box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
       transform: translateY(-2px);
-      background: white;
+    }
+
+    body.dark input[type="text"]:focus,
+    body.dark input[type="email"]:focus,
+    body.dark input[type="password"]:focus {
+      background: #404040;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
     }
 
     input::placeholder {
       color: #adb5bd;
+    }
+
+    body.dark input::placeholder {
+      color: #6c757d;
     }
 
     .password-toggle {
@@ -190,6 +292,10 @@
 
     .password-toggle:hover {
       color: #667eea;
+    }
+
+    body.dark .password-toggle {
+      color: #adb5bd;
     }
 
     .signup-button {
@@ -234,12 +340,22 @@
       transform: translateY(-1px);
     }
 
+    .signup-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .login-link {
       text-align: center;
       margin-top: 30px;
       padding-top: 20px;
       border-top: 1px solid #e9ecef;
       color: #6c757d;
+    }
+
+    body.dark .login-link {
+      border-top: 1px solid #333;
+      color: #adb5bd;
     }
 
     .login-link a {
@@ -259,6 +375,10 @@
       font-size: 0.9rem;
       color: #6c757d;
       line-height: 1.5;
+    }
+
+    body.dark .terms-text {
+      color: #adb5bd;
     }
 
     .terms-text a {
@@ -305,6 +425,10 @@
       transition: opacity 0.3s ease;
     }
 
+    body.dark .password-strength {
+      background: #333;
+    }
+
     .password-strength.show {
       opacity: 1;
     }
@@ -320,9 +444,24 @@
     .strength-fair { background: #fd7e14; width: 50%; }
     .strength-good { background: #ffc107; width: 75%; }
     .strength-strong { background: #28a745; width: 100%; }
+
+    @media (max-width: 480px) {
+      .signup-container {
+        padding: 30px 20px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Theme Toggle Switch -->
+  <label class="theme-switch" for="themeToggle">
+    <input type="checkbox" id="themeToggle" />
+    <span class="slider"></span>
+  </label>
+
   <div class="signup-container">
     <div class="signup-header">
       <div class="signup-icon">👤</div>
@@ -421,6 +560,18 @@
       const button = document.getElementById('signupButton');
       button.classList.add('button-loading');
       button.disabled = true;
+    });
+
+    // Theme toggle functionality with localStorage
+    const themeToggle = document.getElementById("themeToggle");
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+      themeToggle.checked = true;
+    }
+
+    themeToggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", themeToggle.checked ? "dark" : "light");
     });
   </script>
 </body>
