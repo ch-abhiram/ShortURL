@@ -1,69 +1,103 @@
-# 🔗 Short URL Generator (Full Stack - Node.js + MongoDB + EJS)
+# 🔗 Short URL Generator
 
-Welcome to the **Short URL Generator** — a full-stack web application built using **Node.js**, **MongoDB**, and **EJS**. It allows you to shorten long URLs and track click analytics through a clean web interface.
+Welcome to the **Short URL Generator** — a modern, full-stack URL shortener and analytics platform.  
+Built with Node.js, Express, MongoDB, and EJS, this project allows you to shorten links, manage your short URLs, and view detailed click analytics through a clean and modern UI.
+
+## 🌍 Live Demo
+
+[**Try it now!**](https://shorturl-olxo.onrender.com)  
+> https://shorturl-olxo.onrender.com
 
 ---
 
 ## 📸 Features
 
-- 🔐 **Shorten long URLs** via web UI or API
-- 🌐 **Redirect** users using short URLs
-- 📊 **Track total clicks & timestamp history**
-- 🖥️ **EJS-powered Frontend** for interactive user experience
-- ⚡ RESTful API for developers
-
----
+- 🌐 **Shorten long URLs** via web interface
+- ↔️ **Automatic redirection** using short URLs
+- 📊 **Track clicks & timestamp history** for each link
+- 👤 **User accounts:** Signup, Login, Personal Dashboard
+- 🖥️ **EJS-powered frontend** for a smooth experience
+- ⚡ **RESTful API** for developers & integration
 
 ## 🧠 Tech Stack
 
-- 🟢 **Backend**: Node.js + Express
-- 🍃 **Database**: MongoDB (Mongoose ODM)
-- 🖼️ **Frontend**: EJS Templates
-- ✂️ **Short ID Generator**: `shortid`
-
----
+- **Backend:** Node.js + Express
+- **Database:** MongoDB (Atlas, via Mongoose)
+- **Frontend:** EJS Templates
+- **Short ID Generator:** shortid
+- **Password Security:** bcryptjs
 
 ## 📁 Project Structure
 ```csharp
 short-url/
 │
-├── controllers/        # Request logic
-├── middlewares/        # middlewares
-├── models/             # Mongoose schemas
-├── routes/             # Express route handlers
-├── views/              # EJS pages
-├── connect.js          # MongoDB connection
+├── controllers/        # Request logic (routes' handler functions)
+├── middlewares/        # Express middlewares (auth, etc.)
+├── models/             # Mongoose schemas (User, URL)
+├── routes/             # Express routers (user, url, static)
+├── views/              # EJS front-end templates
+├── db/                 # MongoDB connection utility (db.js)
 ├── index.js            # Main server entry
-├── .gitignore          # Prevents tracking node_modules, env files
-└── README.md
-```
+├── .gitignore          # Ignores node_modules, .env, etc.
+├── package.json        # Project dependencies & scripts
+└── README.md           # This documentation
 
-## 📦 Installation
+```
 
 ```bash
+# 1. Clone the repo
 git clone https://github.com/ch-abhiram/ShortURL.git
+
+# 2. Go into the project directory
 cd short-url
+
+# 3. Install dependencies
 npm install
+
+# 4. Create a .env file at the project root with the following:
+PORT=8000
+MONGO_URI=your-mongodb-connection-uri
+SESSION_SECRET=your-session-secret
+
+# 5. Start the application
+npm start
 ```
 
 ---
-🖼️ Web Interface
 
-Submit a long URL through a form
+## 🖼️ Web Interface Highlights
 
-Get a short URL instantly
+- **Submit a long URL** and get a short URL instantly
+- **View your URL history** and analytics (number of clicks, visits)
+- **Copy and share** your personalized short links easily
+- **Secure authentication** for your data
 
-Track total visits and analytics
-
-All powered by EJS templates
 ---
 
-💡 Future Plans
+## ⚡ API Endpoints
 
-✅ Web-based analytics UI (chart + table)
+| Method | Endpoint                  | Description                       |
+|--------|---------------------------|-----------------------------------|
+| POST   | `/url`                    | Create a new short URL            |
+| GET    | `/:shortId`               | Redirect to the original URL      |
+| GET    | `/url/analytics/:shortId` | Get click analytics for a shortId |
 
-🧪 Add unit tests
+> _API is authenticated. Please login to access user-specific routes._
 
-🌍 Deploy to Render/Netlify/Vercel
+---
 
-🔐 Add user accounts & login
+## 💡 Future Improvements
+
+- 🧪 Add unit & integration tests
+- 📊 Richer analytics UI (charts, filters)
+- 🔐 OAuth and social login
+- ✉️ Email verification/password reset
+- 🌍 Custom domain support
+
+---
+
+## ✨ Author
+
+- **GitHub:** [ch-abhiram](https://github.com/ch-abhiram)
+
+---
