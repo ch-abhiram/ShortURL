@@ -5,15 +5,12 @@ async function handlegenerateNewShortURL(req, res) {
     try {
         const body = req.body;
 
-        
         if (!body.url) {
             return res.status(400).json({ error: 'url is required' });
         }
 
-        
         const shortID = shortId();
 
-        
         await URL.create({
             shortId: shortID,
             redirectURL: body.url,
@@ -21,19 +18,23 @@ async function handlegenerateNewShortURL(req, res) {
             createdBy: req.user ? req.user._id : null,
         });
 
-        
         const baseUrl = req.protocol + "://" + req.get("host");
 
         
+        const allurls = await URL.find({ createdBy: req.user._id });
+
         return res.render("home", {
             id: shortID,
-            baseUrl: baseUrl
+            baseUrl: baseUrl,
+            user: req.user,
+            urls: allurls
         });
     } catch (error) {
         console.error("Error generating short URL:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 }
+
 
 async function handleGetAnalytics(req, res) {
     try {

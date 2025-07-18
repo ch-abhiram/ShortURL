@@ -7,13 +7,13 @@ async function handleUserSignup(req, res) {
     try {
         const { name, email, password } = req.body;
 
-        // Check if email already exists
+        
         const exists = await User.findOne({ email });
         if (exists) {
             return res.render("signup", { error: "Email already registered" });
         }
 
-        // Hash the password before saving
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             name,
@@ -33,14 +33,14 @@ async function handleUserLogin(req, res) {
         if (!user) {
             return res.render("login", { error: "Invalid email or password" });
         }
-        // Compare passwords
+        
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.render("login", { error: "Invalid email or password" });
         }
         const sessionId = uuidv4();
         setUser(sessionId, user);
-        // You may want to set cookie options: { httpOnly: true, secure: true } in production
+        
         res.cookie("uid", sessionId, { httpOnly: true });
         return res.redirect("/");
     } catch (error) {
